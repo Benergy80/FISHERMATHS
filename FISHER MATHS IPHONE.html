@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Fisher Maths</title>
+  <style>
+    body {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      margin: 0;
+      padding: 1rem;
+      max-width: 480px;
+      width: 100%;
+      background: linear-gradient(135deg, #2c2c2c 0%, #1a1a1a 50%, #000000 100%);
+      min-height: 100vh;
+      color: #ffffff;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    body::before {
+      content: '⚓';
+      position: absolute;
+      top: 10px;
+      right: 20px;
+      font-size: 2rem;
+      opacity: 0.3;
+      color: #ff6b35;
+      animation: float 3s ease-in-out infinite;
+    }
+    
+    body::after {
+      content: '🧭';
+      position: absolute;
+      bottom: 20px;
+      left: 20px;
+      font-size: 1.5rem;
+      opacity: 0.3;
+      animation: spin 8s linear infinite;
+    }
+    
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-10px); }
+    }
+    
+    @keyframes spin {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+    
+    .header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding: 1.5rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 15px;
+      backdrop-filter: blur(10px);
+      border: 2px solid #ff6b35;
+      box-shadow: 0 4px 15px rgba(255,107,53,0.3);
+    }
+    
+    .header h1 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: bold;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+      color: #ffffff;
+      letter-spacing: 2px;
+    }
+    
+    .calculator-section {
+      background: rgba(255,255,255,0.05);
+      border-radius: 20px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      backdrop-filter: blur(10px);
+      border: 2px solid rgba(255,107,53,0.4);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    }
+    
+    h2 { 
+      font-size: 1.25rem; 
+      margin-top: 0; 
+      margin-bottom: 1rem;
+      text-align: center;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+      color: #ff6b35;
+      letter-spacing: 1px;
+      font-weight: bold;
+    }
+    
+    label { 
+      display: block; 
+      margin: 0.75rem 0 0.25rem; 
+      font-size: 1rem;
+      font-weight: 600;
+      color: #ffffff;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+    }
+    
+    input { 
+      width: 100%; 
+      padding: 0.75rem; 
+      font-size: 1rem; 
+      box-sizing: border-box; 
+      margin-top: 0.25rem;
+      -webkit-appearance: none;
+      border-radius: 10px;
+      border: 2px solid #333333;
+      background: rgba(255,255,255,0.95);
+      color: #000000;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+    
+    input:focus {
+      outline: none;
+      border-color: #ff6b35;
+      box-shadow: 0 0 15px rgba(255,107,53,0.4);
+      transform: translateY(-2px);
+    }
+    
+    button {
+      width: 100%; 
+      padding: 1rem; 
+      font-size: 1.1rem; 
+      margin-top: 1rem;
+      border: 2px solid #ff6b35; 
+      border-radius: 15px; 
+      background: linear-gradient(45deg, #ff6b35, #f7931e);
+      color: #ffffff; 
+      cursor: pointer;
+      -webkit-appearance: none;
+      -webkit-tap-highlight-color: rgba(0,0,0,0);
+      touch-action: manipulation;
+      font-weight: bold;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      box-shadow: 0 6px 20px rgba(255,107,53,0.3);
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+    }
+    
+    button::before {
+      content: '⚓';
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1.2rem;
+    }
+    
+    button:active {
+      background: linear-gradient(45deg, #e55a2b, #d6831a);
+      transform: translateY(2px);
+      box-shadow: 0 3px 10px rgba(255,107,53,0.4);
+    }
+    
+    .result {
+      background: rgba(0,0,0,0.4);
+      border-radius: 12px;
+      padding: 1rem;
+      margin-top: 1rem;
+      text-align: center;
+      border: 2px solid rgba(255,107,53,0.3);
+    }
+    
+    .result p { 
+      font-size: 1.1rem; 
+      margin: 0;
+      font-weight: 600;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+      color: #ffffff;
+    }
+    
+    .wave-divider {
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #ff6b35, #000000, #ff6b35, transparent);
+      margin: 2rem 0;
+      border-radius: 3px;
+      animation: wave 2s ease-in-out infinite;
+    }
+    
+    @keyframes wave {
+      0%, 100% { transform: scaleX(1); }
+      50% { transform: scaleX(1.1); }
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <h1>FISHER MATHS</h1>
+  </div>
+
+  <div class="calculator-section">
+    <h2>Depth from Weight & Line</h2>
+    <label for="weight">Weight (oz):</label>
+    <input type="number" id="weight" value="5" min="0" step="0.1">
+    <label for="line">Line Length (ft):</label>
+    <input type="number" id="line" value="50" min="0" step="1">
+    <label for="speed">Speed (mph):</label>
+    <input type="number" id="speed" value="3" min="0" step="0.1">
+    <button id="calcDepthBtn" type="button">Calculate Depth</button>
+    
+    <div class="result">
+      <p>Depth: <strong><span id="depth">–</span> ft</strong></p>
+    </div>
+  </div>
+
+  <div class="wave-divider"></div>
+
+  <div class="calculator-section">
+    <h2>Line for Target Depth</h2>
+    <label for="weight2">Weight (oz):</label>
+    <input type="number" id="weight2" value="5" min="0" step="0.1">
+    <label for="depthTarget">Target Depth (ft):</label>
+    <input type="number" id="depthTarget" value="15" min="0" step="1">
+    <label for="speed2">Speed (mph):</label>
+    <input type="number" id="speed2" value="3" min="0" step="0.1">
+    <button id="calcLineBtn" type="button">Calculate Line Length</button>
+    
+    <div class="result">
+      <p>Line Length: <strong><span id="lineResult">–</span> ft</strong></p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const weightInput  = document.getElementById('weight');
+      const lineInput    = document.getElementById('line');
+      const speedInput   = document.getElementById('speed');
+      const depthSpan    = document.getElementById('depth');
+      const depthButton  = document.getElementById('calcDepthBtn');
+
+      const weight2Input = document.getElementById('weight2');
+      const targetDepth  = document.getElementById('depthTarget');
+      const speed2Input  = document.getElementById('speed2');
+      const lineSpan     = document.getElementById('lineResult');
+      const lineButton   = document.getElementById('calcLineBtn');
+
+      function calculateDepth() {
+        const W = parseFloat(weightInput.value) || 0;
+        const L = parseFloat(lineInput.value)   || 0;
+        const v = parseFloat(speedInput.value)  || 0;
+        if (W <= 0 || L <= 0 || v <= 0) {
+          depthSpan.textContent = '–';
+          return;
+        }
+        const term1 = W * L;
+        const term2 = 3 / v;
+        const depth = (term1 / 20) * term2 * term2;
+        depthSpan.textContent = depth.toFixed(1);
+      }
+
+      function calculateLine() {
+        const W = parseFloat(weight2Input.value) || 0;
+        const D = parseFloat(targetDepth.value)   || 0;
+        const v = parseFloat(speed2Input.value)  || 0;
+        if (W <= 0 || D <= 0 || v <= 0) {
+          lineSpan.textContent = '–';
+          return;
+        }
+        const factor = v / 3;
+        const length = (20 * D / W) * factor * factor;
+        lineSpan.textContent = length.toFixed(1);
+      }
+
+      // Add both click and touchstart events for better mobile compatibility
+      function addMobileEvents(button, callback) {
+        button.addEventListener('click', callback);
+        button.addEventListener('touchstart', function(e) {
+          e.preventDefault();
+          callback();
+        });
+      }
+
+      addMobileEvents(depthButton, calculateDepth);
+      addMobileEvents(lineButton, calculateLine);
+    });
+  </script>
+</body>
+</html>
